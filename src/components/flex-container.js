@@ -33,19 +33,18 @@ var styles = StyleSheet.create({
 });
 */
 
-var onAppendChildToContainer = function(elem, f) {
-   // console.log("in onAppend, elem: "+elem);
-  var observer = new MutationObserver(function(mutations, me) {
-      //console.log("in mutationObserver, me: "+me);
-      mutations.forEach(function(m) {
-        console.log(m);
-        if (m.addedNodes.length) {
-            f(m.target, m.addedNodes)
-        }
-    })
-  })
-  observer.observe(elem, {childList: true})
-}
+// var onAppendChildToContainer = function(elem, f) {
+//    // console.log("in onAppend, elem: "+elem);
+//   var observer = new MutationObserver(function(mutations, me) {
+//       //console.log("in mutationObserver, me: "+me);
+//       mutations.forEach(function(m) {
+//         if (m.addedNodes.length) {
+//             f(m.target, m.addedNodes)
+//         }
+//     })
+//   })
+//   observer.observe(elem, {childList: true})
+// }
 
 AFRAME.registerComponent('gui-flex-container', {
     schema: {
@@ -70,7 +69,6 @@ AFRAME.registerComponent('gui-flex-container', {
 
     },
     init: function () {
-        console.log("in aframe-gui-component init for: "+this.el.getAttribute("id"));
         var containerGuiItem = this.el.getAttribute("gui-item");
 
         if (this.data.isTopContainer) {
@@ -208,12 +206,10 @@ AFRAME.registerComponent('gui-flex-container', {
     getElementSize: function () {},
     setBackground: function () {
         if (this.data.opacity > 0) {
-            console.log("panel position: " + JSON.stringify(this.el.getAttribute("position")));
             var guiItem = this.el.getAttribute("gui-item");
             var panelBackground = document.createElement("a-entity");
 
             panelBackground.setAttribute('geometry', `primitive: box; height: ${guiItem.height}; width: ${guiItem.width}; depth:0.025;`);
-            console.log("about to set panel background color to: : " + this.data.panelColor);
             panelBackground.setAttribute('material', `shader: standard; depthTest: true; opacity: ${this.data.opacity}; color: ${this.data.panelColor};`);
             panelBackground.setAttribute('position', this.el.getAttribute("position").x + ' ' + this.el.getAttribute("position").y + ' ' + (this.el.getAttribute("position").z - 0.0125));
             panelBackground.setAttribute('rotation', this.el.getAttribute("rotation").x + ' ' + this.el.getAttribute("rotation").y + ' ' + this.el.getAttribute("rotation").z);

@@ -1,3 +1,5 @@
+require('../scripts/utils.js')
+
 AFRAME.registerComponent('gui-button', {
     schema: {
         on: {default: 'click'},
@@ -20,18 +22,18 @@ AFRAME.registerComponent('gui-button', {
         var el = this.el;
         var guiItem = el.getAttribute("gui-item");
         this.guiItem = guiItem;
-        //console.log("in button, guiItem: "+JSON.stringify(guiItem));
+
         var guiInteractable = el.getAttribute("gui-interactable");
         this.guiInteractable = guiInteractable;
-        //console.log("in button, guiInteractable: "+JSON.stringify(guiInteractable));
+
         var multiplier = 512; // POT conversion
-        var canvasWidth = guiItem.width*multiplier;
-        var canvasHeight = guiItem.height*multiplier;
+        var canvasWidth = Utils.nearestPow2(guiItem.width*multiplier);
+        var canvasHeight = Utils.nearestPow2(guiItem.height*multiplier);
 
         var canvasContainer = document.createElement('div');
         canvasContainer.setAttribute('class', 'visuallyhidden');
         document.body.appendChild(canvasContainer);
-        console.log("in gui-button init, data: "+JSON.stringify(data));
+
         var canvas = document.createElement("canvas");
         this.canvas = canvas;
         canvas.setAttribute('width', canvasWidth);
@@ -107,10 +109,8 @@ AFRAME.registerComponent('gui-button', {
         // console.log("in setActiveState function, new state: " + activeState);
         this.data.toggleState = activeState;
         if (!activeState) {
-            console.log('not active, about to set background color');
             this.buttonEntity.setAttribute('material', 'color', this.data.backgroundColor);
         } else {
-            console.log('active, about to set active color');
             this.buttonEntity.setAttribute('material', 'color', this.data.activeColor);
         }
     },

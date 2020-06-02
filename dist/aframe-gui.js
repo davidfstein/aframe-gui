@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 18);
+/******/ 	return __webpack_require__(__webpack_require__.s = 19);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -155,6 +155,19 @@ window.drawIcon = function (ctx, canvas, iconFontSize, icon, color) {
 "use strict";
 
 
+nearestPow2 = function nearestPow2(n) {
+  Math.pow(2, Math.round(Math.log(n) / Math.log(2)));
+};
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(1);
+
 AFRAME.registerComponent('gui-button', {
     schema: {
         on: { default: 'click' },
@@ -177,18 +190,18 @@ AFRAME.registerComponent('gui-button', {
         var el = this.el;
         var guiItem = el.getAttribute("gui-item");
         this.guiItem = guiItem;
-        //console.log("in button, guiItem: "+JSON.stringify(guiItem));
+
         var guiInteractable = el.getAttribute("gui-interactable");
         this.guiInteractable = guiInteractable;
-        //console.log("in button, guiInteractable: "+JSON.stringify(guiInteractable));
+
         var multiplier = 512; // POT conversion
-        var canvasWidth = guiItem.width * multiplier;
-        var canvasHeight = guiItem.height * multiplier;
+        var canvasWidth = Utils.nearestPow2(guiItem.width * multiplier);
+        var canvasHeight = Utils.nearestPow2(guiItem.height * multiplier);
 
         var canvasContainer = document.createElement('div');
         canvasContainer.setAttribute('class', 'visuallyhidden');
         document.body.appendChild(canvasContainer);
-        console.log("in gui-button init, data: " + JSON.stringify(data));
+
         var canvas = document.createElement("canvas");
         this.canvas = canvas;
         canvas.setAttribute('width', canvasWidth);
@@ -261,10 +274,8 @@ AFRAME.registerComponent('gui-button', {
         // console.log("in setActiveState function, new state: " + activeState);
         this.data.toggleState = activeState;
         if (!activeState) {
-            console.log('not active, about to set background color');
             this.buttonEntity.setAttribute('material', 'color', this.data.backgroundColor);
         } else {
-            console.log('active, about to set active color');
             this.buttonEntity.setAttribute('material', 'color', this.data.activeColor);
         }
     },
@@ -311,7 +322,7 @@ AFRAME.registerPrimitive('a-gui-button', {
 });
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -403,7 +414,7 @@ AFRAME.registerPrimitive('a-gui-circle-loader', {
 });
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -575,7 +586,7 @@ AFRAME.registerPrimitive('a-gui-circle-timer', {
 });
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -952,7 +963,7 @@ AFRAME.registerPrimitive('a-gui-cursor', {
 });
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -993,19 +1004,18 @@ var styles = StyleSheet.create({
 });
 */
 
-var onAppendChildToContainer = function onAppendChildToContainer(elem, f) {
-    // console.log("in onAppend, elem: "+elem);
-    var observer = new MutationObserver(function (mutations, me) {
-        //console.log("in mutationObserver, me: "+me);
-        mutations.forEach(function (m) {
-            console.log(m);
-            if (m.addedNodes.length) {
-                f(m.target, m.addedNodes);
-            }
-        });
-    });
-    observer.observe(elem, { childList: true });
-};
+// var onAppendChildToContainer = function(elem, f) {
+//    // console.log("in onAppend, elem: "+elem);
+//   var observer = new MutationObserver(function(mutations, me) {
+//       //console.log("in mutationObserver, me: "+me);
+//       mutations.forEach(function(m) {
+//         if (m.addedNodes.length) {
+//             f(m.target, m.addedNodes)
+//         }
+//     })
+//   })
+//   observer.observe(elem, {childList: true})
+// }
 
 AFRAME.registerComponent('gui-flex-container', {
     schema: {
@@ -1030,7 +1040,6 @@ AFRAME.registerComponent('gui-flex-container', {
 
     },
     init: function init() {
-        console.log("in aframe-gui-component init for: " + this.el.getAttribute("id"));
         var containerGuiItem = this.el.getAttribute("gui-item");
 
         if (this.data.isTopContainer) {
@@ -1167,12 +1176,10 @@ AFRAME.registerComponent('gui-flex-container', {
     getElementSize: function getElementSize() {},
     setBackground: function setBackground() {
         if (this.data.opacity > 0) {
-            console.log("panel position: " + JSON.stringify(this.el.getAttribute("position")));
             var guiItem = this.el.getAttribute("gui-item");
             var panelBackground = document.createElement("a-entity");
 
             panelBackground.setAttribute('geometry', 'primitive: box; height: ' + guiItem.height + '; width: ' + guiItem.width + '; depth:0.025;');
-            console.log("about to set panel background color to: : " + this.data.panelColor);
             panelBackground.setAttribute('material', 'shader: standard; depthTest: true; opacity: ' + this.data.opacity + '; color: ' + this.data.panelColor + ';');
             panelBackground.setAttribute('position', this.el.getAttribute("position").x + ' ' + this.el.getAttribute("position").y + ' ' + (this.el.getAttribute("position").z - 0.0125));
             panelBackground.setAttribute('rotation', this.el.getAttribute("rotation").x + ' ' + this.el.getAttribute("rotation").y + ' ' + this.el.getAttribute("rotation").z);
@@ -1209,7 +1216,7 @@ AFRAME.registerPrimitive('a-gui-flex-container', {
 });
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1353,7 +1360,7 @@ AFRAME.registerPrimitive('a-gui-icon-button', {
 });
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1528,7 +1535,7 @@ AFRAME.registerPrimitive('a-gui-icon-label-button', {
 });
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1692,7 +1699,7 @@ AFRAME.registerPrimitive('a-gui-input', {
 });
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1735,7 +1742,7 @@ AFRAME.registerComponent('gui-interactable', {
 });
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1757,11 +1764,13 @@ AFRAME.registerComponent('gui-item', {
 });
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+
+__webpack_require__(1);
 
 AFRAME.registerComponent('gui-label', {
   schema: {
@@ -1781,8 +1790,8 @@ AFRAME.registerComponent('gui-label', {
     var el = this.el;
     var guiItem = el.getAttribute("gui-item");
     var multiplier = 500;
-    var canvasWidth = guiItem.width * multiplier;
-    var canvasHeight = guiItem.height * multiplier;
+    var canvasWidth = Utils.nearestPow2(guiItem.width * multiplier);
+    var canvasHeight = Utils.nearestPow2(guiItem.height * multiplier);
 
     var canvasContainer = document.createElement('div');
     this.canvasContainer = canvasContainer;
@@ -1863,7 +1872,7 @@ AFRAME.registerPrimitive('a-gui-label', {
 });
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1918,7 +1927,7 @@ AFRAME.registerPrimitive('a-gui-progressbar', {
 });
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2091,7 +2100,7 @@ AFRAME.registerPrimitive('a-gui-radio', {
 });
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2226,7 +2235,7 @@ AFRAME.registerPrimitive('a-gui-slider', {
 });
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2396,7 +2405,7 @@ AFRAME.registerPrimitive('a-gui-toggle', {
 });
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2707,7 +2716,7 @@ AFRAME.registerPrimitive('a-gui-vertical-slider', {
 });
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2726,7 +2735,7 @@ if (cursor) {
 }
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2738,23 +2747,23 @@ if (typeof AFRAME === 'undefined') {
 
 // Components
 __webpack_require__(0);
+__webpack_require__(11);
 __webpack_require__(10);
+__webpack_require__(6);
+__webpack_require__(12);
+__webpack_require__(2);
+__webpack_require__(7);
+__webpack_require__(8);
+__webpack_require__(16);
+__webpack_require__(14);
+__webpack_require__(3);
+__webpack_require__(13);
+__webpack_require__(4);
+__webpack_require__(15);
+__webpack_require__(17);
 __webpack_require__(9);
 __webpack_require__(5);
-__webpack_require__(11);
-__webpack_require__(1);
-__webpack_require__(6);
-__webpack_require__(7);
-__webpack_require__(15);
-__webpack_require__(13);
-__webpack_require__(2);
-__webpack_require__(12);
-__webpack_require__(3);
-__webpack_require__(14);
-__webpack_require__(16);
-__webpack_require__(8);
-__webpack_require__(4);
-__webpack_require__(17);
+__webpack_require__(18);
 
 /***/ })
 /******/ ]);
