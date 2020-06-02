@@ -33,18 +33,18 @@ var styles = StyleSheet.create({
 });
 */
 
-// var onAppendChildToContainer = function(elem, f) {
-//    // console.log("in onAppend, elem: "+elem);
-//   var observer = new MutationObserver(function(mutations, me) {
-//       //console.log("in mutationObserver, me: "+me);
-//       mutations.forEach(function(m) {
-//         if (m.addedNodes.length) {
-//             f(m.target, m.addedNodes)
-//         }
-//     })
-//   })
-//   observer.observe(elem, {childList: true})
-// }
+var onAppendChildToContainer = function(elem, f) {
+   // console.log("in onAppend, elem: "+elem);
+  var observer = new MutationObserver(function(mutations, me) {
+      //console.log("in mutationObserver, me: "+me);
+      mutations.forEach(function(m) {
+        if (m.addedNodes.length) {
+            f(m.target, m.addedNodes)
+        }
+    })
+  })
+  observer.observe(elem, {childList: true})
+}
 
 AFRAME.registerComponent('gui-flex-container', {
     schema: {

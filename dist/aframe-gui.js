@@ -155,7 +155,7 @@ window.drawIcon = function (ctx, canvas, iconFontSize, icon, color) {
 "use strict";
 
 
-nearestPow2 = function nearestPow2(n) {
+window.nearestPow2 = function (n) {
   Math.pow(2, Math.round(Math.log(n) / Math.log(2)));
 };
 
@@ -1004,18 +1004,18 @@ var styles = StyleSheet.create({
 });
 */
 
-// var onAppendChildToContainer = function(elem, f) {
-//    // console.log("in onAppend, elem: "+elem);
-//   var observer = new MutationObserver(function(mutations, me) {
-//       //console.log("in mutationObserver, me: "+me);
-//       mutations.forEach(function(m) {
-//         if (m.addedNodes.length) {
-//             f(m.target, m.addedNodes)
-//         }
-//     })
-//   })
-//   observer.observe(elem, {childList: true})
-// }
+var onAppendChildToContainer = function onAppendChildToContainer(elem, f) {
+    // console.log("in onAppend, elem: "+elem);
+    var observer = new MutationObserver(function (mutations, me) {
+        //console.log("in mutationObserver, me: "+me);
+        mutations.forEach(function (m) {
+            if (m.addedNodes.length) {
+                f(m.target, m.addedNodes);
+            }
+        });
+    });
+    observer.observe(elem, { childList: true });
+};
 
 AFRAME.registerComponent('gui-flex-container', {
     schema: {
