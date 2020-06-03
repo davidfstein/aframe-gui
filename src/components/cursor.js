@@ -18,8 +18,6 @@ AFRAME.registerComponent('gui-cursor', {
 
         AFRAME.utils.entity.setComponentProperty(el, 'raycaster.interval', '500');
         
-        console.log("fuse: "+fuse+", fuseTimeout: "+fuseTimeout);
-
         if(data.design == 'dot'){    
 
             el.setAttribute('geometry', 'primitive: ring; radiusInner:0.000001; radiusOuter:0.025');
@@ -267,7 +265,6 @@ AFRAME.registerComponent('gui-cursor', {
         }
 
         el.addEventListener('mouseenter', function () {
-            console.log("in gui-cursor mousenter, el: "+el);
             el.emit('hovergui');
             if (data.design == 'dot' || data.design == 'ring') {
                 cursorShadow.emit('hovergui');
@@ -286,7 +283,6 @@ AFRAME.registerComponent('gui-cursor', {
         });
 
         el.addEventListener('mouseleave', function () {
-            console.log("in gui-cursor mouseleave, el: "+el);
             el.emit('leavegui');
             if (data.design == 'dot' || data.design == 'ring') {
                 cursorShadow.emit('leavegui');
@@ -316,7 +312,6 @@ AFRAME.registerComponent('gui-cursor', {
         }
 
         el.addEventListener("stateremoved", function (evt) {
-            console.log("evt.detail " +evt.detail)
             if (evt.detail === 'cursor-fusing') {
                 if(data.design == 'dot' || data.design == 'ring' || data.design == 'cross' ){  
                     if(fuse){
