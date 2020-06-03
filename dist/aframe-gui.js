@@ -330,7 +330,7 @@ AFRAME.registerPrimitive('a-gui-button', {
 
 AFRAME.registerComponent('gui-circle-loader', {
     schema: {
-        count: { type: 'number', default: '100' },
+        count: { type: 'number', default: 100 },
         fontFamily: { type: 'string', default: 'Arial' },
         fontSize: { type: 'string', default: '150px' },
         fontColor: { type: 'string', default: key_grey },
@@ -422,7 +422,7 @@ AFRAME.registerPrimitive('a-gui-circle-loader', {
 
 AFRAME.registerComponent('gui-circle-timer', {
     schema: {
-        countDown: { type: 'number', default: '10' },
+        countDown: { type: 'number', default: 10 },
         fontFamily: { type: 'string', default: 'Arial' },
         fontSize: { type: 'string', default: '150px' },
         fontColor: { type: 'string', default: key_grey },
@@ -1563,8 +1563,8 @@ AFRAME.registerComponent('gui-input', {
         var el = this.el;
         var guiItem = el.getAttribute("gui-item");
         var multiplier = 512; // POT conversion
-        var canvasWidth = guiItem.width * multiplier;
-        var canvasHeight = guiItem.height * multiplier;
+        var canvasWidth = Utils.nearestPow2(guiItem.width * multiplier);
+        var canvasHeight = Utils.nearestPow2(guiItem.height * multiplier);
 
         var canvasContainer = document.createElement('div');
         canvasContainer.setAttribute('class', 'visuallyhidden');
@@ -1709,15 +1709,15 @@ AFRAME.registerComponent('gui-interactable', {
     schema: {
         clickAction: { type: 'string' },
         hoverAction: { type: 'string' },
-        keyCode: { type: 'number', default: null },
-        key: { type: 'string', default: null }
+        keyCode: { type: 'number', default: -1 },
+        key: { type: 'string' }
     },
     init: function init() {
         var _this = this;
         var data = this.data;
         var el = this.el;
 
-        if (data.keyCode) {
+        if (data.keyCode > 0) {
             window.addEventListener("keydown", function (event) {
                 // console.log('in keydown handler, event key: ' + event.key);
                 if (event.key == data.key) {
@@ -1753,7 +1753,7 @@ AFRAME.registerComponent('gui-item', {
         type: { type: 'string' },
         width: { type: 'number', default: 1 },
         height: { type: 'number', default: 1 },
-        margin: { type: 'vec4', default: '0 0 0 0' }
+        margin: { type: 'vec4', default: { x: 0, y: 0, z: 0, w: 0 } }
     },
     init: function init() {},
     update: function update() {},
@@ -2112,16 +2112,16 @@ AFRAME.registerComponent('gui-slider', {
         backgroundColor: { type: 'string', default: key_offwhite },
         borderColor: { type: 'string', default: key_grey },
         handleColor: { type: 'string', default: key_white },
-        handleInnerDepth: { type: 'number', default: '0.02' },
-        handleInnerRadius: { type: 'number', default: '0.13' },
-        handleOuterDepth: { type: 'number', default: '0.04' },
-        handleOuterRadius: { type: 'number', default: '0.17' },
+        handleInnerDepth: { type: 'number', default: 0.02 },
+        handleInnerRadius: { type: 'number', default: 0.13 },
+        handleOuterDepth: { type: 'number', default: 0.04 },
+        handleOuterRadius: { type: 'number', default: 0.17 },
         hoverColor: { type: 'string', default: key_grey_light },
-        leftRightPadding: { type: 'number', default: '0.25' },
-        percent: { type: 'number', default: '0.5' },
-        sliderBarHeight: { type: 'number', default: '0.05' },
-        sliderBarDepth: { type: 'number', default: '0.03' },
-        topBottomPadding: { type: 'number', default: '0.125' }
+        leftRightPadding: { type: 'number', default: 0.25 },
+        percent: { type: 'number', default: 0.5 },
+        sliderBarHeight: { type: 'number', default: 0.05 },
+        sliderBarDepth: { type: 'number', default: 0.03 },
+        topBottomPadding: { type: 'number', default: 0.125 }
     },
     init: function init() {
 
