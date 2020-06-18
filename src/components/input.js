@@ -78,35 +78,6 @@ AFRAME.registerComponent('gui-input', {
         ////WAI ARIA Support
         el.setAttribute('role', 'input');
 
-        el.addEventListener('mouseenter', function (evt) {
-            el.setAttribute('material', 'color', data.hoverColor);
-            borderTopEntity.setAttribute('material', 'color', data.borderHoverColor);
-            borderBottomEntity.setAttribute('material', 'color', data.borderHoverColor);
-            borderLeftEntity.setAttribute('material', 'color', data.borderHoverColor);
-            borderRightEntity.setAttribute('material', 'color', data.borderHoverColor);
-        });
-
-        el.addEventListener('mouseleave', function (evt) {
-            el.setAttribute('material', 'color', data.backgroundColor);
-            borderTopEntity.setAttribute('material', 'color', data.borderColor);
-            borderBottomEntity.setAttribute('material', 'color', data.borderColor);
-            borderLeftEntity.setAttribute('material', 'color', data.borderColor);
-            borderRightEntity.setAttribute('material', 'color', data.borderColor);
-        });
-
-        el.addEventListener(data.on, function (evt) {
-            console.log('I was clicked at: ', evt.detail.intersection.point);
-            var guiInteractable = el.getAttribute("gui-interactable");
-            console.log("guiInteractable: "+guiInteractable);
-            var clickActionFunctionName = guiInteractable.clickAction;
-            console.log("clickActionFunctionName: "+clickActionFunctionName);
-            // find object
-            var clickActionFunction = window[clickActionFunctionName];
-            //console.log("clickActionFunction: "+clickActionFunction);
-            // is object a function?
-            if (typeof clickActionFunction === "function") clickActionFunction(evt);
-        });
-
 
     },
     play: function () {
@@ -138,7 +109,6 @@ AFRAME.registerComponent('gui-input', {
 
 AFRAME.registerPrimitive( 'a-gui-input', {
     defaultComponents: {
-        'gui-interactable': { },
         'gui-item': { type: 'input' },
         'gui-input': { }
     },

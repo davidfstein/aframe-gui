@@ -5,7 +5,7 @@ AFRAME.registerComponent('gui-button', {
         on: {default: 'click'},
         toggle: {type: 'boolean', default: false},
         toggleState: {type: 'boolean', default: false},
-        text: {type: 'string', default: 'text'},
+        text: {type: 'string', default: ''},
         fontSize: {type: 'string', default: '150px'},
         fontFamily: {type: 'string', default: 'Arial'},
         fontWeight: {type: 'string', default: 'normal'},
@@ -103,7 +103,7 @@ AFRAME.registerComponent('gui-button', {
 
     },
     update: function (oldData) {
-        // console.log("In button update, toggle: "+this.data.toggleState);
+        this.setText(this.data.text);
     },
     setActiveState: function (activeState) {
         // console.log("in setActiveState function, new state: " + activeState);

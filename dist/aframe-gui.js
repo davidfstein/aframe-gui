@@ -173,13 +173,13 @@ AFRAME.registerComponent('gui-button', {
         on: { default: 'click' },
         toggle: { type: 'boolean', default: false },
         toggleState: { type: 'boolean', default: false },
-        text: { type: 'string', default: 'text' },
+        text: { type: 'string', default: '' },
         fontSize: { type: 'string', default: '150px' },
         fontFamily: { type: 'string', default: 'Arial' },
         fontWeight: { type: 'string', default: 'normal' },
         fontColor: { type: 'string', default: key_offwhite },
         borderColor: { type: 'string', default: key_offwhite },
-        backgroundColor: { type: 'string', default: key_grey },
+        backgroundcolor: { type: 'string', default: key_grey },
         hoverColor: { type: 'string', default: key_grey_dark },
         activeColor: { type: 'string', default: key_orange }
 
@@ -268,7 +268,7 @@ AFRAME.registerComponent('gui-button', {
     },
     play: function play() {},
     update: function update(oldData) {
-        // console.log("In button update, toggle: "+this.data.toggleState);
+        this.setText(this.data.text);
     },
     setActiveState: function setActiveState(activeState) {
         // console.log("in setActiveState function, new state: " + activeState);
@@ -1615,35 +1615,6 @@ AFRAME.registerComponent('gui-input', {
 
         ////WAI ARIA Support
         el.setAttribute('role', 'input');
-
-        el.addEventListener('mouseenter', function (evt) {
-            el.setAttribute('material', 'color', data.hoverColor);
-            borderTopEntity.setAttribute('material', 'color', data.borderHoverColor);
-            borderBottomEntity.setAttribute('material', 'color', data.borderHoverColor);
-            borderLeftEntity.setAttribute('material', 'color', data.borderHoverColor);
-            borderRightEntity.setAttribute('material', 'color', data.borderHoverColor);
-        });
-
-        el.addEventListener('mouseleave', function (evt) {
-            el.setAttribute('material', 'color', data.backgroundColor);
-            borderTopEntity.setAttribute('material', 'color', data.borderColor);
-            borderBottomEntity.setAttribute('material', 'color', data.borderColor);
-            borderLeftEntity.setAttribute('material', 'color', data.borderColor);
-            borderRightEntity.setAttribute('material', 'color', data.borderColor);
-        });
-
-        el.addEventListener(data.on, function (evt) {
-            console.log('I was clicked at: ', evt.detail.intersection.point);
-            var guiInteractable = el.getAttribute("gui-interactable");
-            console.log("guiInteractable: " + guiInteractable);
-            var clickActionFunctionName = guiInteractable.clickAction;
-            console.log("clickActionFunctionName: " + clickActionFunctionName);
-            // find object
-            var clickActionFunction = window[clickActionFunctionName];
-            //console.log("clickActionFunction: "+clickActionFunction);
-            // is object a function?
-            if (typeof clickActionFunction === "function") clickActionFunction(evt);
-        });
     },
     play: function play() {},
     update: function update(oldData) {
@@ -1672,7 +1643,6 @@ AFRAME.registerComponent('gui-input', {
 
 AFRAME.registerPrimitive('a-gui-input', {
     defaultComponents: {
-        'gui-interactable': {},
         'gui-item': { type: 'input' },
         'gui-input': {}
     },
